@@ -1,0 +1,20 @@
+{
+  "name": "return-space",
+  "version": "0.1.0",
+  "description": "A mindful pause for developers: ring a singing bowl and open a breathing companion while Claude works, then chime when it's done.",
+  "author": {
+    "name": "The Wellness Collective",
+    "url": "https://returnspace.app"
+  },
+  "repository": "https://github.com/oasihani/return-space-for-claude",
+  "homepage": "https://returnspace.app",
+  "license": "MIT",
+  "keywords": [
+    "mindfulness",
+    "meditation",
+    "breathing",
+    "wellbeing",
+    "focus",
+    "singing-bowl"
+  ]
+}

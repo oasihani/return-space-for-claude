@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>return space · breathe</title>
+<link rel="icon" type="image/png" href="assets/favicon.png" />
+<link rel="apple-touch-icon" href="assets/favicon.png" />
+<style>
+  @font-face {
+    font-family: 'LINESeedKR';
+    src: url('assets/fonts/LINESeedKR-Rg.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'LINESeedKR';
+    src: url('assets/fonts/LINESeedKR-Bd.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    /* Return Space palette */
+    --bg-0: #EEF2FF;   /* brand-50 / indigo */
+    --bg-1: #EFE7FB;   /* lavender-100 */
+    --bg-2: #FDF2F8;   /* soft-pink */
+    --brand-400: #818CF8;
+    --brand-500: #6366F1;
+    --brand-600: #4F46E5;
+    --lavender-200: #DCC9F5;
+    --lavender-400: #B58CE9;
+    --ink: #312E81;        /* ink-indigo */
+    --deep-ink: #1E1B4B;   /* heading */
+    --dusk: #8B88A8;       /* muted */
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'LINESeedKR', 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Segoe UI", sans-serif;
+    background:
+      radial-gradient(ellipse at 50% 28%, rgba(255,255,255,0.65), rgba(255,255,255,0) 60%),
+      linear-gradient(150deg, var(--bg-0) 0%, var(--bg-1) 48%, var(--bg-2) 100%);
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .stage {
+    position: relative;
+    width: 340px;
+    height: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .halo {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(129,140,248,0.30), rgba(244,114,182,0.10) 45%, rgba(244,114,182,0) 70%);
+    transform: scale(0.55);
+    transition: transform 4s cubic-bezier(0.37, 0, 0.63, 1);
+  }
+
+  .orb {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 36% 30%, var(--lavender-200) 0%, var(--brand-400) 45%, var(--brand-600) 100%);
+    box-shadow:
+      0 20px 60px rgba(99,102,241,0.35),
+      0 0 80px rgba(181,140,233,0.35),
+      inset 0 0 50px rgba(255,255,255,0.25);
+    transform: scale(0.55);
+    transition: transform 4s cubic-bezier(0.37, 0, 0.63, 1);
+  }
+
+  .phase {
+    margin-top: 54px;
+    text-align: center;
+    height: 70px;
+  }
+  .phase .ko {
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--deep-ink);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  .phase .en {
+    margin-top: 6px;
+    font-size: 14px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--dusk);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  .phase.show .ko, .phase.show .en { opacity: 1; }
+
+  .meta {
+    position: absolute;
+    bottom: 80px;
+    display: flex;
+    gap: 28px;
+    padding: 12px 24px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(49,46,129,0.08);
+    color: var(--dusk);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+  }
+  .meta b { color: var(--deep-ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .intro {
+    position: absolute;
+    top: 54px;
+    text-align: center;
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.7;
+    letter-spacing: 0.03em;
+    max-width: 440px;
+    padding: 0 24px;
+    opacity: 0.8;
+  }
+  .intro span { color: var(--dusk); }
+
+  .brand {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    opacity: 0.85;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .brand:hover { opacity: 1; transform: translateY(-1px); }
+  .brand .mark { height: 26px; width: auto; display: block; }
+  .brand .word { height: 15px; width: auto; display: block; }
+
+  .help-btn {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(49,46,129,0.10);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    z-index: 20;
+  }
+  .help-btn:hover { transform: scale(1.08); }
+
+  .help-pop {
+    position: absolute;
+    top: 64px;
+    right: 22px;
+    width: 320px;
+    max-width: calc(100vw - 44px);
+    background: rgba(255,255,255,0.80);
+    border: 1px solid rgba(255,255,255,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 18px;
+    box-shadow: 0 18px 50px rgba(49,46,129,0.18);
+    padding: 20px 22px;
+    text-align: left;
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+    transform-origin: top right;
+    pointer-events: none;
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    z-index: 19;
+  }
+  .help-pop.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .help-pop::after {
+    content: "";
+    position: absolute;
+    top: -7px;
+    right: 19px;
+    width: 14px;
+    height: 14px;
+    background: rgba(255,255,255,0.80);
+    border-left: 1px solid rgba(255,255,255,0.85);
+    border-top: 1px solid rgba(255,255,255,0.85);
+    transform: rotate(45deg);
+  }
+  .hp-title { font-size: 17px; font-weight: 700; color: var(--deep-ink); margin-bottom: 5px; }
+  .hp-title span { font-size: 12px; font-weight: 400; color: var(--dusk); letter-spacing: 0.08em; margin-left: 6px; }
+  .hp-pattern { font-size: 13px; color: var(--brand-600); font-weight: 600; margin-bottom: 13px; }
+  .hp-list { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-bottom: 13px; }
+  .hp-list li { position: relative; padding-left: 18px; font-size: 13.5px; line-height: 1.6; color: var(--ink); }
+  .hp-list li::before { content: ""; position: absolute; left: 0; top: 7px; width: 7px; height: 7px; border-radius: 50%; background: var(--brand-400); }
+  .hp-note { font-size: 12px; line-height: 1.6; color: var(--dusk); border-top: 1px solid rgba(49,46,129,0.10); padding-top: 11px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .halo, .orb, .phase .ko, .phase .en, .help-pop, .help-btn { transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+  <button class="help-btn" id="help-btn" aria-label="호흡법 설명" title="이 호흡법은?">?</button>
+  <div class="help-pop" id="help-pop" role="dialog" aria-label="박스 호흡 설명">
+    <div class="hp-title">박스 호흡 <span>Box Breathing</span></div>
+    <div class="hp-pattern">들이쉬기 4초 · 멈춤 4초 · 내쉬기 4초 · 멈춤 4초</div>
+    <ul class="hp-list">
+      <li>긴장한 신경을 가라앉혀 스트레스와 불안을 줄여줘요.</li>
+      <li>심박수와 호흡을 고르게 해 몸을 안정시켜요.</li>
+      <li>흐트러진 집중력을 되찾고 머리를 다시 맑게 해줘요.</li>
+    </ul>
+    <div class="hp-note">미 해군 특수부대가 압박 상황에서 침착함을 유지할 때 쓰는 호흡법이에요. 4단계를 천천히 반복하기만 하면 됩니다.</div>
+  </div>
+
+  <div class="intro">
+    클로드가 일하는 동안, 잠시 호흡에 머무르세요.<br />
+    <span>While Claude works, return to your breath.</span>
+  </div>
+
+  <div class="stage">
+    <div class="halo" id="halo"></div>
+    <div class="orb" id="orb"></div>
+  </div>
+
+  <div class="phase" id="phase">
+    <div class="ko" id="phase-ko">준비</div>
+    <div class="en" id="phase-en">Get ready</div>
+  </div>
+
+  <div class="meta">
+    <div>호흡 <b id="count">0</b></div>
+    <div>시간 <b id="time">00:00</b></div>
+  </div>
+
+  <a class="brand" href="https://returnspace.app" target="_blank" rel="noopener noreferrer">
+    <img class="mark" src="assets/rs-sphere.png" alt="" />
+    <img class="word" src="assets/rs-wordmark.png" alt="return space" />
+  </a>
+
+<script>
+  // Box breathing: inhale 4s · hold 4s · exhale 4s · hold 4s
+  const PHASES = [
+    { ko: "들이쉬세요", en: "Inhale",  scale: 1.0,  dur: 4000 },
+    { ko: "멈추세요",   en: "Hold",    scale: 1.0,  dur: 4000 },
+    { ko: "내쉬세요",   en: "Exhale",  scale: 0.55, dur: 4000 },
+    { ko: "멈추세요",   en: "Hold",    scale: 0.55, dur: 4000 },
+  ];
+
+  const orb = document.getElementById("orb");
+  const halo = document.getElementById("halo");
+  const phaseEl = document.getElementById("phase");
+  const koEl = document.getElementById("phase-ko");
+  const enEl = document.getElementById("phase-en");
+  const countEl = document.getElementById("count");
+  const timeEl = document.getElementById("time");
+
+  let idx = 0;
+  let breaths = 0;
+  const startTime = Date.now();
+
+  function applyPhase(p) {
+    const secs = (p.dur / 1000) + "s";
+    orb.style.transitionDuration = secs;
+    halo.style.transitionDuration = secs;
+    orb.style.transform = "scale(" + p.scale + ")";
+    halo.style.transform = "scale(" + p.scale + ")";
+
+    koEl.textContent = p.ko;
+    enEl.textContent = p.en;
+    phaseEl.classList.add("show");
+  }
+
+  function tick() {
+    const p = PHASES[idx];
+    applyPhase(p);
+    if (idx === 0) breaths++;          // count at the start of each inhale
+    countEl.textContent = breaths;
+    idx = (idx + 1) % PHASES.length;
+    setTimeout(tick, p.dur);
+  }
+
+  function updateClock() {
+    const s = Math.floor((Date.now() - startTime) / 1000);
+    const mm = String(Math.floor(s / 60)).padStart(2, "0");
+    const ss = String(s % 60).padStart(2, "0");
+    timeEl.textContent = mm + ":" + ss;
+  }
+
+  setTimeout(tick, 1200);
+  setInterval(updateClock, 1000);
+
+  // Help balloon toggle
+  const helpBtn = document.getElementById("help-btn");
+  const helpPop = document.getElementById("help-pop");
+  helpBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    helpPop.classList.toggle("open");
+  });
+  document.addEventListener("click", function (e) {
+    if (!helpPop.contains(e.target) && e.target !== helpBtn) {
+      helpPop.classList.remove("open");
+    }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") helpPop.classList.remove("open");
+  });
+</script>
+</body>
+</html>
