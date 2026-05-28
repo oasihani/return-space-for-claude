@@ -19,7 +19,7 @@ const PAGE = join(ROOT, "breathe.html");
 const COUNTER = join(tmpdir(), "return-space.count");
 const ACTIVE = join(tmpdir(), "return-space.active");
 // Open the breathing companion once every N prompts (override with RETURN_SPACE_EVERY).
-const OPEN_EVERY = Number(process.env.RETURN_SPACE_EVERY) || 5;
+const OPEN_EVERY = Number(process.env.RETURN_SPACE_EVERY) || 8;
 
 const mode = process.argv[2] || "stop";
 const plat = process.platform;

@@ -10,10 +10,18 @@ call you back. Delegate, breathe, return.
 
 ## Install
 
+Run these **one line at a time** (Claude Code reads a multi-line paste as a single
+command):
+
 ```
-/plugin marketplace add oasihani/return-space-for-claude
+/plugin marketplace add https://github.com/oasihani/return-space-for-claude
+```
+```
 /plugin install return-space
 ```
+
+The full `https://` URL above uses HTTPS, so it works even if you don't have a
+GitHub SSH key set up.
 
 That's it. The next time you give Claude a task, the breathing companion appears.
 
@@ -21,7 +29,7 @@ That's it. The next time you give Claude a task, the breathing companion appears
 
 It uses two Claude Code hooks:
 
-- **UserPromptSubmit** (you start a task) → on every 5th prompt, ring the bowl +
+- **UserPromptSubmit** (you start a task) → on every 8th prompt, ring the bowl +
   open `breathe.html`. The other prompts stay completely silent, so quick tasks
   aren't interrupted.
 - **Stop** (Claude finishes) → ring the bowl, but only on the turns that opened
@@ -29,6 +37,8 @@ It uses two Claude Code hooks:
 
 The breathing companion guides **box breathing** (inhale 4s · hold 4s · exhale 4s
 · hold 4s) — a simple technique that calms the nervous system and restores focus.
+A **countdown** shows the suggested length (1 minute); when it ends, or whenever
+you feel done, press **Done** to finish.
 
 ## Requirements
 
@@ -38,10 +48,13 @@ The breathing companion guides **box breathing** (inhale 4s · hold 4s · exhale
 
 ## Customize
 
+- **How often it opens** — defaults to once every **8** prompts. To change it,
+  either edit `OPEN_EVERY` at the top of `scripts/hook.mjs`, or set the
+  `RETURN_SPACE_EVERY` environment variable (e.g. `5` for more often, `12` for less).
+- **Session length** — the countdown defaults to 1 minute. Edit `RECOMMENDED_SEC`
+  near the bottom of `breathe.html` for a longer or shorter break.
 - **Sound** — replace `sounds/singing-bowl.mp3` with your own.
 - **Breathing pattern** — edit the `PHASES` array near the bottom of `breathe.html`.
-- **How often it opens** — defaults to once every 5 prompts. Set the
-  `RETURN_SPACE_EVERY` environment variable (e.g. `3` or `10`) to change it.
 
 ## Credits
 
