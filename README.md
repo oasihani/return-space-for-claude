@@ -6,7 +6,7 @@ When you hand a task to Claude, a singing bowl rings and a gentle breathing
 companion opens in your browser. When Claude finishes, the bowl rings again to
 call you back. Delegate, breathe, return.
 
-![return space](assets/rs-wordmark.png)
+![return space — a breathing companion that opens while Claude works](assets/screenshot.png)
 
 ## Install
 
