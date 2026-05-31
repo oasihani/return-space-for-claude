@@ -8,6 +8,8 @@ call you back. Delegate, breathe, return.
 
 ![return space — a breathing companion that opens while Claude works](assets/demo.gif)
 
+> If return space helps you breathe, please ⭐ this repo — that's how I know it's working.
+
 ## Install
 
 Run these **one line at a time** (Claude Code reads a multi-line paste as a single
@@ -55,6 +57,11 @@ you feel done, press **Done** to finish.
   near the bottom of `breathe.html` for a longer or shorter break.
 - **Sound** — replace `sounds/singing-bowl.mp3` with your own.
 - **Breathing pattern** — edit the `PHASES` array near the bottom of `breathe.html`.
+
+## Feedback
+
+Bug reports, ideas, and "this helped me" stories are all welcome in
+[GitHub Discussions](https://github.com/oasihani/return-space-for-claude/discussions).
 
 ## Credits
 
